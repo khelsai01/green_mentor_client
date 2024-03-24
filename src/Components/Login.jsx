@@ -1,0 +1,72 @@
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {Link, useNavigate} from "react-router-dom"
+import { getLogin } from '../Redux/authentication/action'
+
+const Login = () => {
+    const dispatch = useDispatch()
+    const isAuth = useSelector(store=>store.authReducer.isAuth)
+    const nav = useNavigate()
+const [email,setEmail] = useState("")
+const [password,setPassword] = useState("")
+
+const handleSubmit =(e)=>{
+    e.preventDefault()
+    let obj ={email,password}
+    dispatch(getLogin(obj))
+ setEmail("")
+ setPassword("")
+}
+if(isAuth){
+    return nav("/")
+}
+    return (
+        <div className='w-full h-screen flex items-start bg-gray-200 '>
+            <div className='relative w-1/2 h-full flex flex-col'>
+                <div className='absolute top-[20%] left-[10%] flex flex-col'>
+                    <h1 className='text-3xl text-[#f4af2f] font-bold my-4'>Turn your idea into reality</h1>
+                    <p className='text-2xl text-[#f4af2f] fornt-bold'>Start for the Todos task</p>
+                </div>
+                <img src='https://www.sme-news.co.uk/wp-content/uploads/2021/11/Login.jpg' className='w-full h-full object-cover' alt='login' />
+            </div>
+            <div className='w-1/2 h-full bg-[#f5f5f5] flex flex-col p-20 justify-between'>
+                <h1 className='text-xl text-[#060606] font-bold m-auto'>Tasks Managment</h1>
+
+                <div className=' w-full  felx flex-col max-w-[500px] '>
+                    <div className='w-full flex flex-col mb-5'>
+                        <h3 className='text-3xl font-semibold mb-4 '>Login</h3>
+                        <p className='text-base mb-2'>Welcome Back! Please enter your details</p>
+                    </div>
+                    <div className='w-full flex flex-col'>
+                        <input
+                            type="email"
+                            name='email'
+                            value={email}
+                            onChange={(e)=>setEmail(e.target.value)}
+                            placeholder='Email'
+                            className='w-full text-black my-2 py-4 bg-transparent border-b border-black outline-none focus:outline-none'
+                        />
+                        <input
+                            type="password"
+                            placeholder='Password'
+                            name='password'
+                            value={password}
+                            onChange={(e)=>setPassword(e.target.value)}
+                            className='w-full text-black my-2 py-2 bg-transparent border-b border-black outline-none focus:outline-none'
+                        />
+                    </div>
+                    <div className='w-full flex flex-col my-4'>
+                        <button className='w-full text-white font-semibold my-2 bg-[#060606] rounded-md p-4 text-center flex items-center justify-center' type='submit' onClick={handleSubmit} >Log In</button>
+                        <button className='w-full text-[#060606] my-2 bg-white] border-2 border-black rounded-md p-4 text-center flex items-center justify-center' onClick={()=>nav("/register")}>Register</button>
+                    </div>
+                    <div className='w-full h-[1px] bg-[#727272]'></div>
+                </div>
+                <div className='w-full flex items-center justify-center my-3'>
+                    <p className='text-sm font-normal text-[#060606]'>Don't have account? <span className='font-semibold underline underline-offset-2 cursor-pointer' onClick={()=>nav("/register")}>Sign up for free</span></p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Login
